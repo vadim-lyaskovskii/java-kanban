@@ -12,13 +12,13 @@ public class TaskManager {
 
     public void addTask (Task task) {
         int tempId = getNewID();
-        task.setIdTask(tempId);
+        task.setId(tempId);
         tasks.put(tempId, task);
     }
 
     public void addEpic (Epic epic) {
         int tempId = getNewID();
-        epic.setIdEpic(tempId);
+        epic.setId(tempId);
         epics.put(tempId, epic);
     }
 
@@ -26,30 +26,21 @@ public class TaskManager {
         int tempIdSubTask = getNewID();
         int tempIdEpic = subTask.getIdEpic();
         if (epics.containsKey(tempIdEpic)) {
-            subTask.setIdSubTask(tempIdSubTask);
+            subTask.setId(tempIdSubTask);
             subTasks.put(tempIdSubTask, subTask);
             epics.get(tempIdEpic).setIdListSubTask(tempIdSubTask);
         }
     }
 
     public List<Task> getListAllTasks() {
-        if (tasks.size() == 0) {
-            return Collections.emptyList();
-        }
         return new ArrayList<>(tasks.values());
     }
 
     public List<Epic> getListAllEpics() {
-        if (epics.size() == 0) {
-            return Collections.emptyList();
-        }
         return new ArrayList<>(epics.values());
     }
 
     public List<SubTask> getListAllSubTasks() {
-        if (subTasks.size() == 0) {
-            return Collections.emptyList();
-        }
         return new ArrayList<>(subTasks.values());
     }
 
@@ -71,9 +62,6 @@ public class TaskManager {
 
     public void deleteAllEpics() {
         subTasks.clear();
-        for (Map.Entry<Integer, Epic> epicMap : epics.entrySet()) {
-            epicMap.getValue().clearIdListSubTask();
-        }
         epics.clear();
     }
 
@@ -88,56 +76,45 @@ public class TaskManager {
     }
 
     public Task getTaskById(int id) {
-        if(tasks.containsKey(id)) {
             return tasks.get(id);
-        } else {
-            return new Task(null,null,null);
-        }
     }
 
     public Epic getEpicById(int id) {
-        if(epics.containsKey(id)) {
             return epics.get(id);
-        } else {
-            return new Epic(null,null,null);
-        }
     }
 
     public SubTask getSubTaskById(int id) {
-        if (subTasks.containsKey(id)) {
             return subTasks.get(id);
-        } else {
-            return new SubTask(null, null, null, 0);
-        }
     }
 
     public Task updateTask(Task task) {
-        if (tasks.containsKey(task.getIdTask())) {
-            tasks.put(task.getIdTask(), task);
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
             return task;
         } else {
-            return new Task(null,null,null);
+            return null;
         }
     }
 
     public SubTask updateSubTask(SubTask subTask) {
-        if (subTasks.containsKey(subTask.getIdSubTask())) {
-            subTasks.put(subTask.getIdSubTask(), subTask);
+        if (subTasks.containsKey(subTask.getId())) {
+            subTasks.put(subTask.getId(), subTask);
             return subTask;
         } else {
-            return new SubTask(null,null,null, 0);
+            return null;
         }
     }
 
     public Epic updateEpic(Epic epic) {
-        if (epics.containsKey(epic.getIdEpic())) {
-            epics.put(epic.getIdEpic(), epic);
+        if (epics.containsKey(epic.getId())) {
+            epics.put(epic.getId(), epic);
             updateStatusEpic(epic);
             return epic;
         } else {
-            return new Epic(null,null,null);
+            return null;
         }
     }
+
     private void updateStatusEpic (Epic epic) {
         if (epic.getIdListSubTasks().isEmpty()) {
             epic.setStatus(Status.NEW);
@@ -161,7 +138,6 @@ public class TaskManager {
             }
         }
     }
-
     public Task deleteTaskById (int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
@@ -173,8 +149,9 @@ public class TaskManager {
 
     public SubTask deleteSubTaskById (int id) {
         if (subTasks.containsKey(id)) {
+            epics.get(subTasks.get(id).getIdEpic()).getIdListSubTasks().remove((Integer) id);
             subTasks.remove(id);
-            return null;
+        return null;
         } else {
             return new SubTask(null,null,null, 0);
         }
@@ -192,6 +169,5 @@ public class TaskManager {
             return new Epic(null,null,null);
         }
     }
-
 }
 

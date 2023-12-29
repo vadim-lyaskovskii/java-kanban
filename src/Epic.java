@@ -3,18 +3,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private int idEpic;
     private final List<Integer> idListSubTasks = new ArrayList<>();
     public Epic(String name, String description, Status status) {
         super(name, description, status);
-    }
-
-    public int getIdEpic() {
-        return idEpic;
-    }
-
-    public void setIdEpic(int idEpic) {
-        this.idEpic = idEpic;
     }
 
     public List<Integer> getIdListSubTasks() {
@@ -35,18 +26,18 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return idEpic == epic.idEpic && Objects.equals(idListSubTasks, epic.idListSubTasks);
+        return Objects.equals(idListSubTasks, epic.idListSubTasks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), idEpic, idListSubTasks);
+        return Objects.hash(super.hashCode(), idListSubTasks);
     }
 
     @Override
     public String toString() {
         return "Epic{" +
-                "idEpic=" + idEpic +
+                "idEpic=" + getId() +
                 ", idListSubTasks=" + idListSubTasks +
                 ", nameEpic='" + getName() + '\'' +
                 ", descriptionEpic='" + getDescription() + '\'' +

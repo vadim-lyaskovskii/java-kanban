@@ -3,8 +3,8 @@ import java.util.Objects;
 public class Task {
     private final String name;
     private final String description;
-    Status status;
-    private int idTask;
+    private Status status;
+    private int id;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -24,16 +24,16 @@ public class Task {
         return status;
     }
 
-    public int getIdTask() {
-        return idTask;
+    public int getId() {
+        return id;
     }
 
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public void setIdTask(int idTask) {
-        this.idTask = idTask;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -41,19 +41,19 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return idTask == task.idTask && name.equals(task.name)
+        return id == task.id && name.equals(task.name)
                 && description.equals(task.description) && status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, status, idTask);
+        return Objects.hash(name, description, status, id);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "idTask=" + idTask +
+                "idTask=" + id +
                 ", nameTask='" + name + '\'' +
                 ", descriptionTask='" + description + '\'' +
                 ", status=" + status +

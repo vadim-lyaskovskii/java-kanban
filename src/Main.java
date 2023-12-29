@@ -36,7 +36,7 @@ public class Main {
         System.out.println("---Вывод списка задач---");
         printAllTask(taskManager.getListAllTasks());
         System.out.println("---Удаление задачи по идентификатору---");
-        printDelTaskById(taskManager.deleteTaskById(5));
+        printDelTaskById(taskManager.deleteTaskById(1));/////////////////////////////////////////////////////////////
         System.out.println("---Вывод списка задач после удаления задачи по идентификатору---");
         printAllTask(taskManager.getListAllTasks());
         System.out.println("************************************************************");
@@ -176,11 +176,8 @@ public class Main {
         }
     }
 
-
-
     public static void printTaskById(Task task) {
-        if (task.getIdTask() == 0 && task.getName() == null
-                && task.getDescription() == null && task.getStatus() == null) {
+        if (task == null) {
             System.out.println("Задача отсутствует");
         } else {
             System.out.println(task.toString());
@@ -188,8 +185,7 @@ public class Main {
     }
 
     public static void printEpicById(Epic epic) {
-        if (epic.getIdEpic() == 0 && epic.getName() == null
-                && epic.getDescription() == null && epic.getStatus() == null) {
+        if (epic == null) {
             System.out.println("Эпик отсутствует");
         } else {
             System.out.println(epic.toString());
@@ -197,8 +193,7 @@ public class Main {
     }
 
     public static void printSubTaskById(SubTask subTask) {
-        if (subTask.getIdSubTask() == 0 && subTask.getName() == null
-                && subTask.getDescription() == null && subTask.getStatus() == null && subTask.getIdEpic() == 0) {
+        if (subTask == null && subTask.getIdEpic() == 0) {
             System.out.println("Подзадача отсутствует");
         } else {
             System.out.println(subTask.toString());
@@ -206,8 +201,7 @@ public class Main {
     }
 
     public static void printUpdateTask(Task task) {
-        if (task.getIdTask() == 0 && task.getName() == null
-                && task.getDescription() == null && task.getStatus() == null) {
+        if (task == null) {
             System.out.println("Обновление задачи не выполнено");
         } else {
             System.out.printf("Задача %s обновлена \n", task.toString());
@@ -215,8 +209,7 @@ public class Main {
     }
 
     public static void printUpdateSubTask(SubTask subTask) {
-        if (subTask.getIdSubTask() == 0 && subTask.getName() == null
-                && subTask.getDescription() == null && subTask.getStatus() == null && subTask.getIdEpic() == 0) {
+        if (subTask == null && subTask.getIdEpic() == 0) {
             System.out.println("Обновление подзадачи не выполнено");
         } else {
             System.out.printf("Подадача %s обновлена \n", subTask.toString());
@@ -224,14 +217,15 @@ public class Main {
     }
 
     public static void printUpdateEpic(Epic epic) {
-        if (epic.getIdEpic() == 0 && epic.getName() == null
-                && epic.getDescription() == null && epic.getStatus() == null) {
+        if (epic == null) {
             System.out.println("Обновление эпика не выполнено");
         } else {
             System.out.printf("Эпик %s обновлен \n", epic.toString());
         }
     }
+
     public static void printDelTaskById(Task task) {
+        System.out.println(task.toString());
         if (task == null) {
             System.out.println("Задача удалена");
         } else {
