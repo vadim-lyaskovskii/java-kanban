@@ -36,7 +36,7 @@ public class Main {
         System.out.println("---Вывод списка задач---");
         printAllTask(taskManager.getListAllTasks());
         System.out.println("---Удаление задачи по идентификатору---");
-        printDelTaskById(taskManager.deleteTaskById(1));/////////////////////////////////////////////////////////////
+        printDelTaskById(taskManager.deleteTaskById(4));
         System.out.println("---Вывод списка задач после удаления задачи по идентификатору---");
         printAllTask(taskManager.getListAllTasks());
         System.out.println("************************************************************");
@@ -177,10 +177,10 @@ public class Main {
     }
 
     public static void printTaskById(Task task) {
-        if (task == null) {
-            System.out.println("Задача отсутствует");
+        if (task != null) {
+            System.out.printf("Задача %s удалена", task.toString());
         } else {
-            System.out.println(task.toString());
+            System.out.println("Задача не удалена");
         }
     }
 
@@ -225,25 +225,24 @@ public class Main {
     }
 
     public static void printDelTaskById(Task task) {
-        System.out.println(task.toString());
-        if (task == null) {
-            System.out.println("Задача удалена");
+        if (task != null) {
+            System.out.printf("Задача %s удалена \n", task.toString());
         } else {
             System.out.println("Удаление задачи не выполнено");
         }
     }
 
     public static void printDelSubTaskById(SubTask subTask) {
-        if (subTask == null) {
-            System.out.println("Подзадача удалена");
+        if (subTask != null) {
+            System.out.printf("Подзадача %s удалена \n", subTask.toString());
         } else {
             System.out.println("Удаление подзадачи не выполнено");
         }
     }
 
     public static void printDelEpicById(Epic epic) {
-        if (epic == null) {
-            System.out.println("Эпик удален");
+        if (epic != null) {
+            System.out.printf("Эпик %s удален \n", epic.toString());
         } else {
             System.out.println("Удаление эпика не выполнено");
         }

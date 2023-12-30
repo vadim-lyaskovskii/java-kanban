@@ -91,18 +91,16 @@ public class TaskManager {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
             return task;
-        } else {
-            return null;
         }
+        return null;
     }
 
     public SubTask updateSubTask(SubTask subTask) {
         if (subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             return subTask;
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Epic updateEpic(Epic epic) {
@@ -110,9 +108,8 @@ public class TaskManager {
             epics.put(epic.getId(), epic);
             updateStatusEpic(epic);
             return epic;
-        } else {
-            return null;
         }
+        return null;
     }
 
     private void updateStatusEpic (Epic epic) {
@@ -138,23 +135,17 @@ public class TaskManager {
             }
         }
     }
+
     public Task deleteTaskById (int id) {
-        if (tasks.containsKey(id)) {
-            tasks.remove(id);
-            return null;
-        } else {
-            return new Task(null,null,null);
-        }
+            return tasks.remove(id);
     }
 
     public SubTask deleteSubTaskById (int id) {
         if (subTasks.containsKey(id)) {
             epics.get(subTasks.get(id).getIdEpic()).getIdListSubTasks().remove((Integer) id);
-            subTasks.remove(id);
-        return null;
-        } else {
-            return new SubTask(null,null,null, 0);
+            return subTasks.remove(id);
         }
+        return null;
     }
 
     public Epic deleteEpicById (int id) {
@@ -163,11 +154,9 @@ public class TaskManager {
                 subTasks.remove(idSubTask);
             }
             epics.get(id).clearIdListSubTask();
-            epics.remove(id);
-            return null;
-        } else {
-            return new Epic(null,null,null);
+            return epics.remove(id);
         }
+        return null;
     }
 }
 
