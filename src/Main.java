@@ -1,9 +1,16 @@
+import manager.Managers;
+import manager.TaskManager;
+import status.Status;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
+
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
-        System.out.println("---Добавление задач---");
+        TaskManager taskManager = Managers.getDefault(Managers.getDefaultHistory());
+      /*  System.out.println("---Добавление задач---");
         taskManager.addTask(new Task("Задача-1", "Описание-1", Status.NEW));
         taskManager.addTask(new Task("Задача-2", "Описание-2", Status.NEW));
         taskManager.addTask(new Task("Задача-3", "Описание-3", Status.NEW));
@@ -144,6 +151,60 @@ public class Main {
         printAllEpic(taskManager.getListAllEpics());
         System.out.println("---Вывод списка подзадач---");
         printSubTask(taskManager.getListAllSubTasks());
+        System.out.println("************************************************************");*/
+        taskManager.addTask(new Task("Задача-1", "Описание-1", Status.NEW));
+        taskManager.addTask(new Task("Задача-2", "Описание-2", Status.NEW));
+        taskManager.addTask(new Task("Задача-3", "Описание-3", Status.NEW));
+        taskManager.addEpic(new Epic("Эпис-4", "Описание эпика-4", Status.NEW));
+        taskManager.addEpic(new Epic("Эпис-5", "Описание эпика-5", Status.NEW));
+        taskManager.addSubTask(new SubTask("Подзадача-6", "Описание подзадачи-6", Status.NEW, 4));
+        taskManager.addSubTask(new SubTask("Подзадача-7", "Описание подзадачи-7", Status.NEW, 4));
+        taskManager.addSubTask(new SubTask("Подзадача-8", "Описание подзадачи-8", Status.NEW, 5));
+        taskManager.addSubTask(new SubTask("Подзадача-9", "Описание подзадачи-9", Status.NEW, 5));
+        taskManager.addSubTask(new SubTask("Подзадача-10", "Описание подзадачи-10", Status.NEW, 5));
+        taskManager.getTaskById(1);
+        taskManager.getEpicById(4);
+        taskManager.getSubTaskById(7);
+        taskManager.getEpicById(5);
+        taskManager.getSubTaskById(10);
+        taskManager.getTaskById(3);
+        taskManager.getEpicById(5);
+        taskManager.getEpicById(4);
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(10);
+        System.out.println("************************************************************");
+        printAllTask(taskManager.getHistory());
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(10);
+        System.out.println("************************************************************");
+        printAllTask(taskManager.getHistory());
+        System.out.println("************************************************************");
+        printAllTasks(taskManager);
+        System.out.println("************************************************************");
+    }
+
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getListAllTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getListAllEpics()) {
+            System.out.println(epic);
+
+            for (Task task : manager.getListSubTasksByIdEpic(epic.getId())) {
+                System.out.println("--> " + task);
+            }
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getListAllSubTasks()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
     }
 
     public static void printAllTask(List<Task> taskList) {

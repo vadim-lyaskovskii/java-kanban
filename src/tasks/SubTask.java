@@ -1,3 +1,7 @@
+package tasks;
+
+import status.Status;
+
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -28,7 +32,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "task.SubTask{" +
                 "idSubTask=" + getId() +
                 ", idEpic=" + idEpic +
                 ", nameSubTask='" + getName() + '\'' +
