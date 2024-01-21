@@ -2,7 +2,7 @@ package test;
 
 import manager.Managers;
 import manager.TaskManager;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import status.Status;
 import tasks.Epic;
@@ -13,85 +13,70 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
     private static TaskManager taskManager;
+    private static Epic epic;
+    private static Task task;
+    private static SubTask subTask;
+    private static int idEpic;
 
-    @BeforeAll
-    public static void taskManagerTest(){
-        taskManager = Managers.getDefault(Managers.getDefaultHistory());
-    }
-
-    @Test
-    void teat1TaskEqualToEachOther() {
-        Task task1 = new Task("TЕСТ1", "ТЕСТ1", Status.NEW);
-        taskManager.addTask(task1);
-        int id = task1.getId();
-        Task task2 = taskManager.getTaskById(id);
-        assertEquals(task1, task2, "Task не равны друг другу");
-    }
-
-    @Test
-    void test2EpicEqualToEachOther() {
-        Epic epic1 = new Epic("TЕСТ2", "ТЕСТ2", Status.NEW);
-        taskManager.addEpic(epic1);
-        int id = epic1.getId();
-        Epic epic2 = taskManager.getEpicById(id);
-        assertEquals(epic1, epic2, "Epic не равны друг другу");
-    }
-
-    @Test
-    void test3SubTaskEqualToEachOther() {
-        Epic epic = new Epic("TЕСТ3", "ТЕСТ3", Status.NEW);
+    @BeforeEach
+    public void taskManagerTest(){
+        taskManager = Managers.getDefault();
+        epic = new Epic("TЕСТ-EPIC", "ТЕСТ-EPIC", Status.NEW);
+        task = new Task("TЕСТ-TASK", "ТЕСТ-TASK", Status.NEW);
         taskManager.addEpic(epic);
-        int idEpic = epic.getId();
-        SubTask subTask1 = new SubTask("TЕСТ4", "ТЕСТ4", Status.NEW, idEpic);
-        taskManager.addSubTask(subTask1);
-        int idSubTask = subTask1.getId();
-        SubTask subTask2 = taskManager.getSubTaskById(idSubTask);
-        assertEquals(subTask1, subTask2, "SubTask не равны друг другу");
+        idEpic = epic.getId();
+        subTask = new SubTask("TЕСТ-SUBTASK", "ТЕСТ-SUBTASK", Status.NEW, idEpic);
+        taskManager.addSubTask(subTask);
     }
 
     @Test
-    void test4EpicCannotBeAddedToItselfAsASubtask() {
-        Epic epic1 = new Epic("TЕСТ5", "ТЕСТ5", Status.NEW);
-        taskManager.addEpic(epic1);
-        int idEpic1 = epic1.getId();
-        SubTask subTask1 = new SubTask("TЕСТ6", "ТЕСТ6", Status.NEW, idEpic1);
-        taskManager.addSubTask(subTask1);
-        SubTask subTask2 = new SubTask("TЕСТ7", "ТЕСТ7", Status.NEW, idEpic1);
+    void teatTaskEqualToEachOther() {
+        taskManager.addTask(task);
+        int id = task.getId();
+        Task task2 = taskManager.getTaskById(id);
+        assertEquals(task, task2, "Task не равны друг другу");
+    }
+
+    @Test
+    void testEpicEqualToEachOther() {
+        Epic epic2 = taskManager.getEpicById(idEpic);
+        assertEquals(epic, epic2, "Epic не равны друг другу");
+    }
+
+    @Test
+    void testSubTaskEqualToEachOther() {
+        int idSubTask = subTask.getId();
+        SubTask subTask2 = taskManager.getSubTaskById(idSubTask);
+        assertEquals(subTask, subTask2, "SubTask не равны друг другу");
+    }
+
+    @Test
+    void testEpicCannotBeAddedToItselfAsASubtask() {
+        SubTask subTask2 = new SubTask("TЕСТ7", "ТЕСТ7", Status.NEW, idEpic);
         taskManager.addSubTask(subTask2);
-        for (Integer epic : epic1.getIdListSubTasks()) {
-            assertNotEquals(idEpic1, epic, "Epic можно добавить в самого себя в виде подзадачи");
+        for (Integer epic : epic.getIdListSubTasks()) {
+            assertNotEquals(idEpic, epic, "Epic можно добавить в самого себя в виде подзадачи");
         }
     }
 
     @Test
-    void test5SubtaskCannotBeMadeYourOwnEpic() {
-        Epic epic1 = new Epic("TЕСТ8", "ТЕСТ8", Status.NEW);
-        taskManager.addEpic(epic1);
-        int idEpic1 = epic1.getId();
-        SubTask subTask1 = new SubTask("TЕСТ9", "ТЕСТ9", Status.NEW, idEpic1);
-        taskManager.addSubTask(subTask1);
-        int idEpicBySubTask1 = subTask1.getIdEpic();
-        SubTask subTask2 = new SubTask("TЕСТ10", "ТЕСТ10", Status.NEW, idEpic1);
+    void testSubtaskCannotBeMadeYourOwnEpic() {
+        int idEpicBySubTask1 = subTask.getIdEpic();
+        SubTask subTask2 = new SubTask("TЕСТ10", "ТЕСТ10", Status.NEW, idEpic);
         taskManager.addSubTask(subTask2);
         int idEpicBySubTask2 = subTask2.getIdEpic();
-        assertEquals(idEpic1, idEpicBySubTask1, "Subtask можно сделать своим же эпиком");
-        assertEquals(idEpic1, idEpicBySubTask2, "Subtask можно сделать своим же эпиком");
+        assertEquals(idEpic, idEpicBySubTask1, "Subtask можно сделать своим же эпиком");
+        assertEquals(idEpic, idEpicBySubTask2, "Subtask можно сделать своим же эпиком");
     }
 
     @Test
-    void test6UtilityClassAlwaysReturnsInitializedInstancesOfManagers() {
+    void testUtilityClassAlwaysReturnsInitializedInstancesOfManagers() {
         assertNotNull(taskManager, "Экземпляры менеджеров NULL");
     }
 
     @Test
-    void test7TasksOfDifferentTypesAndCanFindThemById() {
-        Epic epic = new Epic("TЕСТ11", "ТЕСТ11", Status.NEW);
-        taskManager.addEpic(epic);
-        int idEpic = epic.getId();
-        SubTask subTask = new SubTask("TЕСТ12", "ТЕСТ12", Status.NEW, idEpic);
-        taskManager.addSubTask(subTask);
+    void testTasksOfDifferentTypesAndCanFindThemById() {
         int idSubTask = subTask.getId();
-        Task task = new Task("TЕСТ13", "ТЕСТ13", Status.NEW);
         taskManager.addTask(task);
         int idTask = task.getId();
         assertEquals(epic, taskManager.getEpicById(idEpic), "Задача типа Epic нельзя найти по id");
@@ -100,8 +85,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void test8IdDoNotConflictWithinTheManager() {
-        Task task = new Task("TЕСТ14", "ТЕСТ14", Status.NEW);
+    void testIdDoNotConflictWithinTheManager() {
         taskManager.addTask(task);
         int id1 = task.getId();
         taskManager.updateTask(task);
@@ -110,17 +94,16 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void test9HistoryManagerSavesThePreviousVersionOfTheTask() {
-        Task task1 = new Task("TЕСТ15", "ТЕСТ15", Status.NEW);
-        taskManager.addTask(task1);
-        int id1 = task1.getId();
+    void testHistoryManagerSavesThePreviousVersionOfTheTask() {
+        taskManager.addTask(task);
+        int id1 = task.getId();
         taskManager.getTaskById(id1);
         Task task2 = new Task("TЕСТ16", "ТЕСТ16", Status.NEW);
         taskManager.addTask(task2);
         int id2 = task2.getId();
         taskManager.getTaskById(id2);
         int l = taskManager.getHistory().size() - 2;
-        assertEquals(task1, taskManager.getHistory().get(l), "Предыдущая версия задачи несохранена");
+        assertEquals(task, taskManager.getHistory().get(l), "Предыдущая версия задачи несохранена");
     }
 
 

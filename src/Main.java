@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault(Managers.getDefaultHistory());
+        TaskManager taskManager = Managers.getDefault();
       /*  System.out.println("---Добавление задач---");
         taskManager.addTask(new Task("Задача-1", "Описание-1", Status.NEW));
         taskManager.addTask(new Task("Задача-2", "Описание-2", Status.NEW));
