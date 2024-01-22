@@ -105,6 +105,4 @@ class InMemoryTaskManagerTest {
         int l = taskManager.getHistory().size() - 2;
         assertEquals(task, taskManager.getHistory().get(l), "Предыдущая версия задачи несохранена");
     }
-
-
 }
